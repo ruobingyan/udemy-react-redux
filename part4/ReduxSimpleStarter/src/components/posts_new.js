@@ -3,14 +3,14 @@ import { Field, reduxForm } from "redux-form";
 
 class PostsNew extends Component {
   renderField(field) {
+    const { meta: { touched, error } } = field; // destructing, ECMA6
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
     return (
-      <div className="form-group">
+      <div className={className}>
         <lable>{field.label}</lable>
-        <input
-          className="form-control"
-          type="text" {...field.input}
-        />
-        {field.meta.touched ? field.meta.error : ''}
+        <input className="form-control" type="text" {...field.input} />
+        <div className="text-help">{touched ? error : ""}</div>
       </div>
     );
   }
@@ -25,9 +25,19 @@ class PostsNew extends Component {
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field label="Title" name="title" component={this.renderField} />
-        <Field label="Categories" name="categories" component={this.renderField} />
-        <Field label="Post Content" name="content" component={this.renderField} />
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <Field
+          label="Categories"
+          name="categories"
+          component={this.renderField}
+        />
+        <Field
+          label="Post Content"
+          name="content"
+          component={this.renderField}
+        />
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
       </form>
     );
   }
